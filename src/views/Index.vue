@@ -1,12 +1,12 @@
 <template>
     <div>
-        blog
+        index
     </div>
 </template>
 
 <script>
 export default {
-    name: "Blog.vue"
+    name: "Index.vue"
 }
 </script>
 

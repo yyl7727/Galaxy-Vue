@@ -75,7 +75,6 @@ export default {
 <style>
   .el-header,
   .el-footer {
-    background-color: #b3c0d1;
     color: #333;
     text-align: center;
     line-height: 60px;
@@ -95,7 +94,7 @@ export default {
   }
 
   body > .el-container {
-    margin-bottom: 40px;
+    margin:0 auto;
   }
 
   .el-container:nth-child(5) .el-aside,

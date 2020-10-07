@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
-import Blog from '../views/Blog.vue'
+import Index from '../views/Index.vue'
 import BlogEdit from '../views/BlogEdit.vue'
 import BlogDetail from '../views/BlogDetail.vue'
 
@@ -10,13 +10,13 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Index',
-    component: Blog
+    name: 'Login',
+    component: Login
   },
   {
-    path: '/blog',
-    name: 'Blog',
-    component: Blog
+    path: '/index',
+    name: 'Index',
+    component: Index
   },
   {
     path: '/login',
