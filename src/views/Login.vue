@@ -48,7 +48,7 @@ export default {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             const _this = this
-            this.$axios.post('http://127.0.0.1:8081/login', this.ruleForm).then(res => {
+            this.$axios.post('/login', this.ruleForm).then(res => {
               const token = res.headers['authorization']
               const userInfo = res.data.data
 
