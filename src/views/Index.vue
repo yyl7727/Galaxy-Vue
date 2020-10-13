@@ -2,8 +2,7 @@
   <div id="login">
     <div class="login-warp">
       <ul class="menu-tab">
-        <li v-for="menuTab in menuTabs" :key="menuTab.id" :class="{'current': menuTab.current}" @click="toggleMenu(item)">{{menuTab.text}}</li>
-        <li></li>
+        <li v-for="menuTab in menuTabs" :key="menuTab.id" :class="{'current': menuTab.current}" @click="toggleMenu(menuTab)">{{menuTab.text}}</li>
       </ul>
     </div>
   </div>
@@ -25,7 +24,11 @@ export default {
   mounted() {},
   methods: {
     toggleMenu(data) {
-      console.log(data)
+      //点击后先全部false然后重新赋值
+      this.menuTabs.forEach(elem => {
+        elem.current = false;
+      })
+      data.current = true
     }
   },
 };
