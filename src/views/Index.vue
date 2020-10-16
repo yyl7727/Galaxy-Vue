@@ -4,19 +4,28 @@
       <ul class="menu-tab">
         <li v-for="menuTab in menuTabs" :key="menuTab.id" :class="{'current': menuTab.current}" @click="toggleMenu(menuTab)">{{menuTab.text}}</li>
       </ul>
-      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-        <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="login-form" size="medium">
+        <el-form-item prop="username">
+          <label>用户名</label>
+          <el-input type="text" v-model="ruleForm.username" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        <el-form-item prop="password">
+          <label>密码</label>
+          <el-input type="password" v-model="ruleForm.password" maxlength="20" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
-          <el-input v-model.number="ruleForm.age"></el-input>
+        <el-form-item prop="checkCode">
+          <label>验证码</label>
+          <el-row :gutter="10">
+            <el-col :span="14"><el-input v-model.number="ruleForm.checkCode"></el-input></el-col>
+            <el-col :span="10"><el-button type="success" class="login-form-btn">获取验证码</el-button></el-col>
+          </el-row>
+          
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
-          <el-button @click="resetForm('ruleForm')">重置</el-button>
+          <el-button type="primary" @click="submitForm('ruleForm')" class="login-form-btn">提交</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="danger" @click="resetForm('ruleForm')" class="login-form-btn">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -27,60 +36,46 @@
 export default {
   name: "login",
   data() {
-    var checkAge = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('年龄不能为空'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
-            if (value < 18) {
-              callback(new Error('必须年满18岁'));
-            } else {
-              callback();
-            }
-          }
-        }, 1000);
-      };
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.ruleForm.checkPass !== '') {
-            this.$refs.ruleForm.validateField('checkPass');
-          }
-          callback();
-        }
-      };
-      var validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
+    var validateUsername = (rule, value, callback) => {
+      if(value === '') {
+        callback(new Error('请输入用户名'));
+      } else {
+        callback();
+      }
+    };
+    var validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        callback();
+      }
+    };
+    var checkCheckCode = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入验证码'));
+      } else {
+        callback();
+      }
+    };
     return {
       menuTabs: [
         { text: '登录', current: true },
         { text: '注册', current: false }
       ],
       ruleForm: {
-        pass: '',
-        checkPass: '',
-        age: ''
+        username: '',
+        password: '',
+        checkCode: ''
       },
       rules: {
-        pass: [
-          { validator: validatePass, trigger: 'blur' }
+        username: [
+          { validator: validateUsername, trigger: 'blur' }
         ],
-        checkPass: [
-          { validator: validatePass2, trigger: 'blur' }
+        password: [
+          { validator: validatePassword, trigger: 'blur' }
         ],
-        age: [
-          { validator: checkAge, trigger: 'blur' }
+        checkCode: [
+          { validator: checkCheckCode, trigger: 'blur' }
         ]
       }
     };
@@ -94,9 +89,22 @@ export default {
         elem.current = false;
       })
       data.current = true
+    },
+    submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
     }
-  },
-};
+  };
 </script>
 
 <style scoped>
@@ -111,6 +119,7 @@ export default {
 }
 
 .menu-tab {
+  margin: 0px;
   text-align: center;
 }
 
@@ -126,5 +135,16 @@ export default {
 
 .current {
   background-color: rgba(0, 0, 0, .1);
+}
+
+.login-form label {
+  display: block;
+  font-size: 14px;
+  color: #fff;
+}
+
+.login-form-btn {
+  display: block;
+  width: 100%;
 }
 </style>
